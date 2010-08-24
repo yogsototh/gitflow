@@ -214,13 +214,16 @@ cmd_default() {
         echo 
         echo "common prefix? []"
         read commonprefix
+        if [ "$commonprefix" != "" ]; then
+            commonprefix="$commonprefix-"
+        fi
 	fi
 
 	local prefix
 
 	# Feature branches
 	if ! git config --get gitflow.prefix.feature >/dev/null 2>&1 || flag force; then
-		default_suggestion=$(git config --get gitflow.prefix.feature || echo $commonprefix-feature-)
+		default_suggestion=$(git config --get gitflow.prefix.feature || echo ${commonprefix}feature-)
 		printf "Feature branches? [$default_suggestion] "
 		read answer
 		[ "$answer" = "-" ] && prefix= || prefix=${answer:-$default_suggestion}
@@ -229,7 +232,7 @@ cmd_default() {
 
 	# Release branches
 	if ! git config --get gitflow.prefix.release >/dev/null 2>&1 || flag force; then
-		default_suggestion=$(git config --get gitflow.prefix.release || echo $commonprefix-release-)
+		default_suggestion=$(git config --get gitflow.prefix.release || echo ${commonprefix}release-)
 		printf "Release branches? [$default_suggestion] "
 		read answer
 		[ "$answer" = "-" ] && prefix= || prefix=${answer:-$default_suggestion}
@@ -239,7 +242,7 @@ cmd_default() {
 
 	# Hotfix branches
 	if ! git config --get gitflow.prefix.hotfix >/dev/null 2>&1 || flag force; then
-		default_suggestion=$(git config --get gitflow.prefix.hotfix || echo $commonprefix-hotfix-)
+		default_suggestion=$(git config --get gitflow.prefix.hotfix || echo ${commonprefix}hotfix-)
 		printf "Hotfix branches? [$default_suggestion] "
 		read answer
 		[ "$answer" = "-" ] && prefix= || prefix=${answer:-$default_suggestion}
@@ -249,7 +252,7 @@ cmd_default() {
 
 	# Support branches
 	if ! git config --get gitflow.prefix.support >/dev/null 2>&1 || flag force; then
-		default_suggestion=$(git config --get gitflow.prefix.support || echo $commonprefix-support-)
+		default_suggestion=$(git config --get gitflow.prefix.support || echo ${commonprefix}support-)
 		printf "Support branches? [$default_suggestion] "
 		read answer
 		[ "$answer" = "-" ] && prefix= || prefix=${answer:-$default_suggestion}
